@@ -1,0 +1,101 @@
+version: 2
+
+models:
+  - name: collections_risk_dashboard
+    description: "Analytics view for collections priority dashboard. Identifies high-risk loans that need immediate attention for collections team prioritization."
+    config:
+      materialized: view
+      tags: ['analytics', 'dashboard', 'collections']
+    columns:
+      - name: loan_id
+        description: "Loan identifier"
+        
+      - name: snapshot_date
+        description: "Date of data snapshot"
+        
+      - name: gender
+        description: "Customer gender"
+        
+      - name: age_group
+        description: "Customer age group"
+        
+      - name: income_bracket
+        description: "Customer income bracket"
+        
+      - name: outstanding_balance
+        description: "Current outstanding balance"
+        
+      - name: arrears_amount
+        description: "Amount in arrears"
+        
+      - name: total_paid
+        description: "Total amount paid"
+        
+      - name: total_due_today
+        description: "Total amount due today"
+        
+      - name: payment_completion_rate
+        description: "Payment completion percentage"
+        
+      - name: days_past_due
+        description: "Days past due"
+        
+      - name: delinquency_bucket
+        description: "Delinquency bucket"
+        
+      - name: risk_category
+        description: "Risk category"
+        
+      - name: loan_status_summary
+        description: "Loan status summary"
+        
+      - name: product_brand
+        description: "Product brand"
+        
+      - name: price_tier
+        description: "Price tier"
+        
+      - name: nps_category
+        description: "NPS category"
+        
+      - name: nps_score
+        description: "NPS score"
+        
+      - name: customer_segment
+        description: "Customer segment"
+        
+      - name: total_issues_count
+        description: "Total reported issues"
+        
+      - name: collections_priority_score
+        description: "Priority score for collections (higher = more urgent)"
+        
+      - name: recommended_action
+        description: "Recommended collections action"
+        
+      - name: recovery_probability
+        description: "Expected recovery probability"
+
+  - name: nps_credit_correlation
+    description: "Analytics view showing correlation between NPS and credit performance. Understand how customer satisfaction relates to payment behavior for strategic insights."
+    config:
+      materialized: view
+      tags: ['analytics', 'insights', 'nps', 'correlation']
+    columns:
+      - name: analysis_type
+        description: "Type of analysis (NPS Category, Customer Segment, Product-Price)"
+        
+      - name: category
+        description: "Category being analyzed"
+        
+      - name: count
+        description: "Number of responses/records in category"
+        
+      - name: metric_1
+        description: "Primary metric (varies by analysis type)"
+        
+      - name: metric_2
+        description: "Secondary metric (varies by analysis type)"
+        
+      - name: metric_3
+        description: "Tertiary metric (varies by analysis type)"

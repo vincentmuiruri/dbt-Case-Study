@@ -1,0 +1,197 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned customer demographic data from raw_customer_data. Standardizes customer information, calculates age groups and income brackets."
+    columns:
+      - name: loan_id
+        description: "Primary identifier for the loan"
+        tests:
+          - unique
+          - not_null
+          
+      - name: gender
+        description: "Customer gender (lowercased and trimmed)"
+        
+      - name: date_of_birth
+        description: "Customer date of birth in YYYY-MM-DD format"
+        
+      - name: current_age
+        description: "Calculated current age based on date_of_birth"
+        
+      - name: age_group
+        description: "Age bracket categorization (18-24, 25-34, 35-44, 45-54, 55+)"
+        
+      - name: monthly_income
+        description: "Customer's monthly income"
+        tests:
+          - not_null
+          
+      - name: income_bracket
+        description: "Income category (Low, Medium, High, Very High)"
+
+  - name: stg_loans
+    description: "Cleaned loan data from raw_credit_data. Standardizes loan information with data quality validation."
+    config:
+      tags: ['staging', 'loans']
+      materialized: view
+    columns:
+      - name: loan_id
+        description: "Primary key for loans"
+        tests:
+          - unique
+          - not_null
+          
+      - name: loan_amount
+        description: "Original loan amount (balance)"
+        tests:
+          - not_null
+          
+      - name: interest_rate
+        description: "Weekly interest rate"
+        
+      - name: days_past_due
+        description: "Number of days payment is overdue"
+        
+      - name: origination_date
+        description: "Date when loan was originated"
+        
+      - name: loan_status
+        description: "Current status of the loan (lowercased and trimmed)"
+        
+      - name: account_status_l2
+        description: "Secondary account status"
+        
+      - name: created_at
+        description: "Timestamp when record was created"
+        
+      - name: updated_at
+        description: "Timestamp when record was last updated"
+        
+      - name: has_data_quality_issues
+        description: "Flag indicating if row has data quality problems"
+
+  - name: stg_sales
+    description: "Cleaned sales transaction data from raw_sales_data. Standardizes product and sales information."
+    columns:
+      - name: sale_id
+        description: "Primary identifier for sale transaction"
+        tests:
+          - unique
+          - not_null
+          
+      - name: loan_id
+        description: "Foreign key to loans table"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_loans')
+              field: loan_id
+          
+      - name: sale_date
+        description: "Date when sale occurred"
+        
+      - name: return_date
+        description: "Date when product was returned (if applicable)"
+        
+      - name: is_returned
+        description: "Boolean flag indicating if product was returned"
+        
+      - name: sale_type
+        description: "Type of sale (lowercased and trimmed)"
+        
+      - name: cash_price
+        description: "Price if paid in cash"
+        
+      - name: loan_price
+        description: "Price if financed through loan"
+        
+      - name: financing_markup
+        description: "Difference between loan price and cash price"
+        
+      - name: markup_percentage
+        description: "Markup percentage for financing"
+        
+      - name: product_name
+        description: "Name of the product (lowercased and trimmed)"
+        
+      - name: product_model
+        description: "Product model (lowercased and trimmed)"
+        
+      - name: loan_term
+        description: "Term length of the loan"
+        
+      - name: seller_name
+        description: "Name of the seller (lowercased and trimmed)"
+        
+      - name: seller_type
+        description: "Type of seller (lowercased and trimmed)"
+        
+      - name: product_brand
+        description: "Brand categorization (Apple iPhone, Samsung, Other)"
+        
+      - name: price_tier
+        description: "Price category (Budget, Mid-Range, Premium, Luxury)"
+
+  - name: stg_nps_responses
+    description: "Cleaned and categorized NPS survey responses from raw_nps_data. Standardizes customer satisfaction data."
+    columns:
+      - name: submission_id
+        description: "Primary identifier for NPS submission"
+        tests:
+          - unique
+          - not_null
+          
+      - name: respondent_id
+        description: "Identifier for the survey respondent"
+        
+      - name: loan_id
+        description: "Foreign key to loans table"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_loans')
+              field: loan_id
+          
+      - name: submitted_at
+        description: "Timestamp when survey was submitted"
+        
+      - name: nps_score
+        description: "Numeric NPS score (0-10)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>= 0', '<= 10']
+          
+      - name: nps_category
+        description: "NPS categorization (Promoter/Passive/Detractor/No Response)"
+        
+      - name: main_reason
+        description: "Main reason for the score (text feedback)"
+        
+      - name: improvement_suggestion
+        description: "Suggested improvements (text feedback)"
+        
+      - name: is_happy_with_device
+        description: "Boolean flag for device satisfaction"
+        
+      - name: is_happy_with_service
+        description: "Boolean flag for service satisfaction"
+        
+      - name: experienced_payment_delay
+        description: "Flag indicating payment delay issues"
+        
+      - name: had_support_difficulty
+        description: "Flag indicating support difficulties"
+        
+      - name: has_battery_issue
+        description: "Flag indicating battery issues"
+        
+      - name: uses_app
+        description: "Boolean flag for MoApp usage"
+        
+      - name: preferred_contact_channel
+        description: "Customer's preferred contact method"
+        
+      - name: total_issues_count
+        description: "Sum of all reported issues"

@@ -1,0 +1,218 @@
+version: 2
+
+models:
+  - name: fct_loan_performance
+    description: "Fact table with comprehensive loan performance metrics. One row per loan with all performance indicators, joining loans with sales and customer data."
+    columns:
+      - name: loan_id
+        description: "Primary identifier for the loan"
+        tests:
+          - unique
+          - not_null
+          
+      - name: origination_date
+        description: "Date when loan was originated"
+        
+      - name: sale_date
+        description: "Date of the associated sale"
+        
+      - name: outstanding_balance
+        description: "Current outstanding loan balance"
+        
+      - name: total_paid
+        description: "Total amount paid to date"
+        
+      - name: total_due_today
+        description: "Total amount due as of today"
+        
+      - name: arrears_amount
+        description: "Amount currently in arrears"
+        
+      - name: days_past_due
+        description: "Number of days payment is overdue"
+        
+      - name: delinquency_bucket
+        description: "Delinquency categorization bucket"
+        
+      - name: payment_status
+        description: "Current payment status"
+        
+      - name: account_status_primary
+        description: "Primary account status"
+        
+      - name: account_status_secondary
+        description: "Secondary account status"
+        
+      - name: is_delinquent
+        description: "Boolean flag for delinquency status"
+        
+      - name: loan_age_days
+        description: "Age of loan in days"
+        
+      - name: cash_price
+        description: "Product cash price"
+        
+      - name: loan_price
+        description: "Financed loan price"
+        
+      - name: financing_markup
+        description: "Markup for financing"
+        
+      - name: markup_percentage
+        description: "Percentage markup for financing"
+        
+      - name: product_name
+        description: "Product name"
+        
+      - name: product_brand
+        description: "Product brand category"
+        
+      - name: price_tier
+        description: "Product price tier"
+        
+      - name: seller_name
+        description: "Seller name"
+        
+      - name: seller_type
+        description: "Seller type"
+        
+      - name: is_returned
+        description: "Product return flag"
+        
+      - name: gender
+        description: "Customer gender"
+        
+      - name: current_age
+        description: "Customer age"
+        
+      - name: age_group
+        description: "Customer age group"
+        
+      - name: monthly_income
+        description: "Customer monthly income"
+        
+      - name: income_bracket
+        description: "Customer income bracket"
+        
+      - name: payment_completion_rate
+        description: "Percentage of total due that has been paid"
+        
+      - name: arrears_percentage
+        description: "Percentage of total due that is in arrears"
+        
+      - name: debt_to_income_ratio
+        description: "Monthly payment as percentage of monthly income"
+        
+      - name: risk_category
+        description: "Risk classification (High/Medium/Low Risk/Current)"
+        
+      - name: loan_status_summary
+        description: "Summary loan status (Closed - Paid, Defaulted, Active, etc.)"
+
+  - name: fct_nps_analysis
+    description: "Fact table linking NPS responses with loan performance context. One row per NPS response with loan performance at time of survey."
+    columns:
+      - name: submission_id
+        description: "NPS submission identifier"
+        tests:
+          - unique
+          - not_null
+          
+      - name: respondent_id
+        description: "Survey respondent identifier"
+        
+      - name: loan_id
+        description: "Associated loan identifier"
+        
+      - name: submitted_at
+        description: "Survey submission timestamp"
+        
+      - name: nps_score
+        description: "NPS score (0-10)"
+        
+      - name: nps_category
+        description: "NPS category (Promoter/Passive/Detractor)"
+        
+      - name: main_reason
+        description: "Main reason for NPS score"
+        
+      - name: improvement_suggestion
+        description: "Suggested improvements"
+        
+      - name: is_happy_with_device
+        description: "Device satisfaction flag"
+        
+      - name: is_happy_with_service
+        description: "Service satisfaction flag"
+        
+      - name: uses_app
+        description: "MoApp usage flag"
+        
+      - name: preferred_contact_channel
+        description: "Preferred contact method"
+        
+      - name: experienced_payment_delay
+        description: "Payment delay issue flag"
+        
+      - name: had_support_difficulty
+        description: "Support difficulty flag"
+        
+      - name: has_battery_issue
+        description: "Battery issue flag"
+        
+      - name: total_issues_count
+        description: "Count of reported issues"
+        
+      - name: days_past_due
+        description: "Days past due at survey time"
+        
+      - name: delinquency_bucket
+        description: "Delinquency bucket at survey time"
+        
+      - name: is_delinquent
+        description: "Delinquency flag at survey time"
+        
+      - name: payment_status
+        description: "Payment status at survey time"
+        
+      - name: risk_category
+        description: "Risk category at survey time"
+        
+      - name: loan_status_summary
+        description: "Loan status summary at survey time"
+        
+      - name: arrears_amount
+        description: "Arrears amount at survey time"
+        
+      - name: payment_completion_rate
+        description: "Payment completion rate at survey time"
+        
+      - name: product_brand
+        description: "Product brand"
+        
+      - name: product_name
+        description: "Product name"
+        
+      - name: price_tier
+        description: "Price tier"
+        
+      - name: gender
+        description: "Customer gender"
+        
+      - name: age_group
+        description: "Customer age group"
+        
+      - name: income_bracket
+        description: "Customer income bracket"
+        
+      - name: debt_to_income_ratio
+        description: "Debt to income ratio"
+        
+      - name: days_since_purchase
+        description: "Days between purchase and survey"
+        
+      - name: customer_segment
+        description: "Customer segmentation (At-Risk, Healthy, Recovery Opportunity, etc.)"
+        
+      - name: issue_severity_score
+        description: "Combined issue severity score (0-10 scale)"
