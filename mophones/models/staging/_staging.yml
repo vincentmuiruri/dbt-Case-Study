@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  # Loan staging tests
+  - name: stg_loans
+    description: "Cleaned loan performance data"
+    columns:
+      - name: loan_id
+        description: "Unique loan identifier"
+        tests:
+          - unique
+          - not_null
+      - name: days_past_due
+        description: "Days payment is overdue"
+        tests:
+          - not_null
+      - name: outstanding_balance
+        description: "Current balance owed"
+        tests:
+          - not_null
+
+  # NPS staging tests
+  - name: stg_nps_responses
+    description: "Cleaned NPS survey responses"
+    columns:
+      - name: submission_id
+        description: "Unique response ID"
+        tests:
+          - unique
+          - not_null
+      - name: loan_id
+        description: "Links to loan"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_loans')
+                field: loan_id
+      - name: nps_score
+        description: "Score from 0-10"
+        tests:
+          - not_null
+      - name: nps_category
+        description: "Promoter/Passive/Detractor"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Promoter', 'Passive', 'Detractor']
+
+  # Sales staging tests
+  - name: stg_sales
+    description: "Cleaned sales transaction data"
+    columns:
+      - name: loan_id
+        description: "Links to loan"
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_loans')
+                field: loan_id
+      - name: cash_price
+        description: "Product cash price"
+        tests:
+          - not_null
+
+  # Customer staging tests
+  - name: stg_customers
+    description: "Cleaned customer demographics"
+    columns:
+      - name: loan_id
+        description: "Links to loan"
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              name: loan_id_fk
+              arguments:
+                to: ref('stg_loans')
+                field: loan_id
+      - name: current_age
+        description: "Customer's current age"
+        tests:
+          - not_null

@@ -1,0 +1,140 @@
+version: 2
+
+sources:
+  - name: raw_lending
+    description: "Raw lending system data"
+    database: MOPHONES_DB
+    schema: DBT_DEV
+    tables:
+      - name: raw_credit_data
+        description: "Core loan and payment tracking data"
+        columns:
+          - name: LOAN_ID
+            description: "Primary key for loans"
+            tests:
+              - unique
+              - not_null
+          - name: DATE
+            description: "Transaction or snapshot date"
+          - name: CUSTOMER_AGE
+            description: "Age of customer"
+          - name: TOTAL_PAID
+            description: "Total amount paid to date"
+          - name: TOTAL_DUE_TODAY
+            description: "Amount due as of today"
+          - name: BALANCE
+            description: "Current outstanding balance"
+          - name: DAYS_PAST_DUE
+            description: "Number of days past due"
+          - name: CLOSING_BALANCE
+            description: "Balance at period close"
+          - name: ARREARS
+            description: "Amount in arrears"
+          - name: BALANCE_DUE_STATUS
+            description: "Status of balance due"
+          - name: ACCOUNT_STATUS_L1
+            description: "Account status level 1"
+          - name: ACCOUNT_STATUS_L2
+            description: "Account status level 2"
+          - name: SALE_DATE
+            description: "Original sale date"
+          - name: WEEKLY_RATE
+            description: "Weekly payment rate"
+          - name: INITIAL_PAY
+            description: "Initial payment amount"
+      
+      - name: raw_customer_data
+        description: "Customer demographic and financial data"
+        columns:
+          - name: LOAN_ID
+            description: "Foreign key to loans"
+            tests:
+              - not_null
+          - name: GENDER
+            description: "Customer gender"
+          - name: DATE_OF_BIRTH
+            description: "Customer date of birth"
+          - name: MONTHLY_INCOME
+            description: "Customer monthly income"
+
+  - name: raw_sales
+    description: "Sales transaction data"
+    database: MOPHONES_DB
+    schema: DBT_DEV
+    tables:
+      - name: raw_sales_data
+        description: "Product sales and device information"
+        columns:
+          - name: SALE_ID
+            description: "Primary key for sales"
+            tests:
+              - unique
+              - not_null
+          - name: SALE_DATE
+            description: "Date of sale"
+          - name: RETURNED
+            description: "Whether item was returned"
+          - name: RETURN_DATE
+            description: "Date of return if applicable"
+          - name: SALE_TYPE
+            description: "Type of sale"
+          - name: SELLER
+            description: "Seller identifier"
+          - name: SELLER_TYPE
+            description: "Type of seller"
+          - name: CASH_PRICE
+            description: "Cash price of product"
+          - name: LOAN_PRICE
+            description: "Financed price of product"
+          - name: LOAN_TERM
+            description: "Loan term length"
+          - name: PRODUCT_NAME
+            description: "Name of product sold"
+          - name: MODEL
+            description: "Product model"
+          - name: LOAN_ID
+            description: "Foreign key to loans"
+
+  - name: raw_nps
+    description: "Customer feedback and NPS data"
+    database: MOPHONES_DB
+    schema: DBT_DEV
+    tables:
+      - name: raw_nps_data
+        description: "Net Promoter Score survey responses"
+        columns:
+          - name: SUBMISSION_ID
+            description: "Primary key for survey submission"
+            tests:
+              - unique
+              - not_null
+          - name: RESPONDENT_ID
+            description: "Identifier for respondent"
+          - name: LOAN_ID
+            description: "Foreign key to loans"
+          - name: SUBMITTED_AT
+            description: "Timestamp of submission"
+          - name: NPS_SCORE
+            description: "NPS score (0-10)"
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: [0,1,2,3,4,5,6,7,8,9,10]
+          - name: MAIN_REASON
+            description: "Main reason for score"
+          - name: IMPROVEMENT_SUGGESTION
+            description: "Customer improvement suggestions"
+          - name: HAPPY_WITH_DEVICE
+            description: "Satisfaction with device"
+          - name: HAPPY_WITH_SERVICE
+            description: "Satisfaction with service"
+          - name: PAYMENT_DELAY
+            description: "Issues with payment delays"
+          - name: SUPPORT_DIFFICULTY
+            description: "Difficulty getting support"
+          - name: BATTERY_ISSUE
+            description: "Battery-related issues"
+          - name: USES_MOAPP
+            description: "Whether customer uses mobile app"
+          - name: PREFERRED_CHANNEL
+            description: "Preferred communication channel"
