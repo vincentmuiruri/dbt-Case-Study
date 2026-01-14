@@ -85,8 +85,9 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('stg_loans')
-              field: loan_id
+              arguments:
+                to: ref('stg_loans')
+                field: loan_id
           
       - name: sale_date
         description: "Date when sale occurred"
@@ -150,8 +151,9 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('stg_loans')
-              field: loan_id
+              arguments:
+                to: ref('stg_loans')
+                field: loan_id
           
       - name: submitted_at
         description: "Timestamp when survey was submitted"
@@ -161,7 +163,8 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['>= 0', '<= 10']
+              arguments:
+                values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
           
       - name: nps_category
         description: "NPS categorization (Promoter/Passive/Detractor/No Response)"
